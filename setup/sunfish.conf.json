@@ -1,48 +1,48 @@
 {
     "version": "1.0",
-    "description": "sunfish - dystrybucja z kursu Yocto (linuxdev.pl) dla Raspberry Pi 4, release 6.0 'wrynose'",
+    "description": "sunfish - dystrybucja z kursu Yocto (linuxdev.pl) dla Raspberry Pi 4, release 6.0 'wrynose'. Warstwy zewnetrzne sa przypiete do commitow, na ktorych obraz zostal zbudowany i sprawdzony na sprzecie; trzy warstwy autorskie sledza galaz 'wrynose', zeby odbiorca dostawal ich aktualny stan.",
     "expires": "2030-05-31",
     "sources": {
         "bitbake": {
             "git-remote": {
                 "uri": "https://git.openembedded.org/bitbake",
                 "branch": "2.18",
-                "rev": "2.18"
+                "rev": "0ad6c1c34a5e07a5f8dd66ab248c1e7b37b69fa9"
             }
         },
         "openembedded-core": {
             "git-remote": {
                 "uri": "https://git.openembedded.org/openembedded-core",
                 "branch": "wrynose",
-                "rev": "wrynose"
+                "rev": "f7397af248e1e338929d70a910b0fbc2341528ec"
             }
         },
         "meta-yocto": {
             "git-remote": {
                 "uri": "https://git.yoctoproject.org/meta-yocto",
                 "branch": "wrynose",
-                "rev": "wrynose"
+                "rev": "1b132647002eea43a2c7a7f857f63f42dacbc26c"
             }
         },
         "meta-raspberrypi": {
             "git-remote": {
                 "uri": "https://git.yoctoproject.org/meta-raspberrypi",
                 "branch": "wrynose",
-                "rev": "wrynose"
+                "rev": "f62c67921474370829d24a4fa01ef88543f3906b"
             }
         },
         "meta-openembedded": {
             "git-remote": {
                 "uri": "https://git.openembedded.org/meta-openembedded",
                 "branch": "wrynose",
-                "rev": "wrynose"
+                "rev": "14282a02be9c74a1276a7cda7d6c89e054699a11"
             }
         },
         "meta-webkit": {
             "git-remote": {
                 "uri": "https://github.com/Igalia/meta-webkit",
                 "branch": "wrynose",
-                "rev": "wrynose"
+                "rev": "13a0e5a5cc49516e3e3c91fdc5e7033e3c3dfb73"
             }
         },
         "meta-application": {
@@ -102,7 +102,7 @@
                             },
                             {
                                 "name": "machine/qemuarm64",
-                                "description": "ARMv8 pod QEMU - do prób bez sprzętu"
+                                "description": "ARMv8 pod QEMU - do prob bez sprzetu"
                             }
                         ]
                     },
@@ -123,12 +123,20 @@
                 "configurations": [
                     {
                         "name": "sunfish",
-                        "description": "Konfiguracja kursowa - obraz produkcyjny (prod-image)"
+                        "description": "Wariant konsolowy - bez warstwy graficznej. Cel do zbudowania: 'bitbake core-image-base'."
+                    },
+                    {
+                        "name": "sunfish-kiosk",
+                        "description": "Kiosk GUI z modulu 6 kursu: weston + przegladarka cog na pelnym ekranie + aplikacja web-toggle sterujaca dioda przez GPIO. Cel: 'bitbake core-image-base'.",
+                        "oe-fragments": [
+                            "meta-fish/gui"
+                        ]
                     },
                     {
                         "name": "sunfish-dev",
-                        "description": "Konfiguracja kursowa z ulatwieniami developerskimi: logowanie na roota bez hasla, narzedzia debugowe, debugfs",
+                        "description": "Kiosk GUI plus ulatwienia developerskie: logowanie na roota bez hasla, SSH (dropbear), narzedzia debugowe (gdb, strace), debugfs. Do pracy na sprzecie.",
                         "oe-fragments": [
+                            "meta-fish/gui",
                             "core/yocto/root-login-with-empty-password",
                             "meta-fish/dev-tools",
                             "meta-fish/debugfs"
